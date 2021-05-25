@@ -4,11 +4,20 @@ import { Avatar, Button, IconButton } from "@material-ui/core";
 import { Chat, MoreVert, Search } from "@material-ui/icons";
 import styled from "styled-components";
 import { auth, db } from "../../config/firebase";
+import { useCollection } from "react-firebase-hooks/firestore";
 import FormDialog from "./FormDialog";
+import ChatRow from "./components/ChatRow";
+import Loading from "../loading/Loading";
 
 const Sidebar = () => {
   const [input, setInput] = useState("");
   const [user] = useAuthState(auth);
+
+  const userChatReference = db
+    .collection("chats")
+    .where("users", "array-contains", user?.email);
+  const [chatSnapShot, loading] = useCollection(userChatReference);
+
   const createChat = () => {
     console.log("in create chat");
     console.log(input);
@@ -18,10 +27,12 @@ const Sidebar = () => {
     });
     setInput("");
   };
+  if (loading) return <Loading />;
+
   return (
     <Container>
       <Header>
-        <UserAvatar onClick={() => auth.signOut()} />
+        <UserAvatar onClick={() => auth.signOut()} src={user?.photoURL} />
         <IconContainer>
           <IconButton>
             <Chat />
@@ -35,7 +46,15 @@ const Sidebar = () => {
         <Search />
         <SearchInput placeholder="Search in chats" />
       </SearchContainer>
-      <FormDialog input={input} setInput={setInput} onAdd={createChat} />
+      <FormDialog
+        input={input}
+        setInput={setInput}
+        onAdd={createChat}
+        chatSnapShot={chatSnapShot}
+      />
+      {chatSnapShot?.docs.map((chat) => (
+        <ChatRow key={chat.id} users={chat.data().users} />
+      ))}
     </Container>
   );
 };
