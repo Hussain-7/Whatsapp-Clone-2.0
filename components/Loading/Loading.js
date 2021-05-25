@@ -9,7 +9,7 @@ const Loading = () => {
       <div>
         <img
           src="WhatsApp.svg"
-          alt=""
+          alt="daadasds"
           style={{
             marginBottom: 50,
           }}

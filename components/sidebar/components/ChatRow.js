@@ -13,8 +13,12 @@ const ChatRow = ({ id, users }) => {
   );
   const recipient = recipientSnapshot?.docs?.[0]?.data();
   const recipientsEmail = getRecipientEmail(users, user);
+  const enterChat = () => {
+    console.log(`/chat/${id}`);
+    router.push(`/chat/${id}`);
+  };
   return (
-    <Container>
+    <Container onClick={enterChat}>
       {recipient ? <UserAvatar src={recipient?.photoURL} /> : <UserAvatar />}
 
       <p>{recipientsEmail}</p>

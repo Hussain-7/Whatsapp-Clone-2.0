@@ -11,12 +11,12 @@ import Loading from "../loading/Loading";
 
 const Sidebar = () => {
   const [input, setInput] = useState("");
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   const userChatReference = db
     .collection("chats")
     .where("users", "array-contains", user?.email);
-  const [chatSnapShot, loading] = useCollection(userChatReference);
+  const [chatSnapShot] = useCollection(userChatReference);
 
   const createChat = () => {
     console.log("in create chat");
@@ -53,7 +53,7 @@ const Sidebar = () => {
         chatSnapShot={chatSnapShot}
       />
       {chatSnapShot?.docs.map((chat) => (
-        <ChatRow key={chat.id} users={chat.data().users} />
+        <ChatRow key={chat.id} id={chat.id} users={chat.data().users} />
       ))}
     </Container>
   );
@@ -61,7 +61,17 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 0.45;
+  border-right: 1px solid whitesmoke;
+  height: 100vh;
+  min-width: 300px;
+  max-width: 350px;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
 const Header = styled.div`
   display: flex;
   position: sticky;

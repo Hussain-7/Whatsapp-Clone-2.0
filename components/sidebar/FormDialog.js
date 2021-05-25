@@ -11,7 +11,7 @@ import * as EmailValidator from "email-validator";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../config/firebase";
 
-export default function FormDialog({ input, setInput, onAdd,chatSnapShot }) {
+export default function FormDialog({ input, setInput, onAdd, chatSnapShot }) {
   const [open, setOpen] = useState(false);
   const [validationString, setValidationString] = useState("");
   const [user] = useAuthState(auth);

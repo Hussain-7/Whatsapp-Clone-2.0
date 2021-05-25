@@ -21,8 +21,8 @@ function MyApp({ Component, pageProps }) {
       );
     }
   }, [user]);
-
   if (loading) return <Loading />;
+
   if (!user) {
     return <Login />;
   } else return <Component {...pageProps} />;
