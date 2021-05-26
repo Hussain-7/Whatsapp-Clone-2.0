@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
-import Login from "./login";
 import Loading from "../components/loading/Loading";
 import { useEffect } from "react";
 import firebase from "firebase";
@@ -22,10 +21,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, [user]);
   if (loading) return <Loading />;
-
-  if (!user) {
-    return <Login />;
-  } else return <Component {...pageProps} />;
+  return <Component {...pageProps} />;
 }
 
 export default MyApp;
