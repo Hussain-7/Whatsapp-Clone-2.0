@@ -77,7 +77,9 @@ const ChatScreen = ({ chat, messages }) => {
             <p>
               Last active:{" "}
               {recipient?.lastSeen?.toDate() ? (
-                <TimeAgo datatime={recipient?.lastSeen?.toDate()} />
+                <span>
+                  <TimeAgo datetime={recipient?.lastSeen?.toDate()} />
+                </span>
               ) : (
                 "Unavailable"
               )}

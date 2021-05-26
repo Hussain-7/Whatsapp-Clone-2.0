@@ -15,7 +15,7 @@ const Loading = () => {
       </Head>
       <div>
         <img
-          src="whatsapp.svg"
+          src="/whatsapp.svg"
           alt="daadasds"
           style={{
             marginBottom: 50,
