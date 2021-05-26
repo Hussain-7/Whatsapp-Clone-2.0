@@ -9,9 +9,14 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
 import { useState } from "react";
 import firebase from "firebase";
-const ChatScreen = (props) => {
+import getRecipientEmail from "../../utils/getRecipientEmail";
+
+const ChatScreen = ({ chat, messages }) => {
+  // console.log(chat);
+  // console.log("=============================");
+  // console.log(messages);
   const [input, setInput] = useState("");
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const [messagesSnapshot] = useCollection(
     db
@@ -20,16 +25,26 @@ const ChatScreen = (props) => {
       .collection("messages")
       .orderBy("timestamp", "asc")
   );
+  const [recipientSnapshot] = useCollection(
+    db
+      .collection("users")
+      .where("email", "==", getRecipientEmail(chat.users, user))
+  );
   const showMessages = () => {
-        return messagesSnapshot.docs.map((message) => (
+    if (messagesSnapshot) {
+      return messagesSnapshot.docs.map((message) => (
         <Message
           key={message.id}
           user={message.data().user}
           message={{
             ...message.data(),
-            timestamp: message.data().timestamp.toDate().getTime(),
+            timestamp: message.data().timestamp?.toDate().getTime(),
           }}
         />
+      ));
+    } else {
+      return JSON.parse(messages).map((message) => (
+        <Message key={message.id} user={message.user} message={message} />
       ));
     }
   };
@@ -50,12 +65,14 @@ const ChatScreen = (props) => {
     });
     setInput("");
   };
+  const recipientsEmail = getRecipientEmail(chat.users, user);
+  if (loading || !recipientsEmail) return <Loading />;
   return (
     <Container>
       <Header>
         <Avatar />
         <HeaderInformation>
-          <h3>Recepient Email</h3>
+          <h3>{recipientsEmail}</h3>
           <p>last Seen ...</p>
         </HeaderInformation>
         <HeaderIcons>
@@ -69,7 +86,7 @@ const ChatScreen = (props) => {
         </HeaderIcons>
       </Header>
       <MessageContainer>
-        {/* {showMessages()} */}
+        {showMessages()}
         <EndOfMessage />
       </MessageContainer>
       <InputContainer>

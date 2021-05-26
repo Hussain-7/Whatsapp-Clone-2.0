@@ -7,11 +7,10 @@ import { auth, db } from "../../config/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import FormDialog from "./FormDialog";
 import ChatRow from "./components/ChatRow";
-import Loading from "../loading/Loading";
 
 const Sidebar = () => {
   const [input, setInput] = useState("");
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const userChatReference = db
     .collection("chats")
@@ -27,7 +26,6 @@ const Sidebar = () => {
     });
     setInput("");
   };
-  if (loading) return <Loading />;
 
   return (
     <Container>

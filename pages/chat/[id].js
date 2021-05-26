@@ -6,9 +6,14 @@ import ChatScreen from "../../components/mainchat/ChatScreen";
 import { auth, db } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import getRecipientEmail from "../../utils/getRecipientEmail";
+import Loading from "../../components/loading/Loading";
 
 function Chat({ chat, messages }) {
+  console.log(chat);
+  console.log(messages);
   const [user, loading] = useAuthState(auth);
+  // console.log()
+  if (loading) return <Loading />;
   return (
     <Container>
       <Head>
@@ -36,9 +41,9 @@ export async function getServerSideProps(context) {
       id: doc.id,
       ...doc.data(),
     }))
-    .map((messages) => ({
-      ...messages,
-      timestamp: messages.data().timestamp.toDate().getTime(),
+    .map((message) => ({
+      ...message,
+      timestamp: message.timestamp?.toDate().getTime(),
     }));
   //Preping the Chats
   const chatRes = await ref.get();
