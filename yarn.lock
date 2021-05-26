@@ -2310,6 +2310,11 @@ react-refresh@0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
+react-timeago@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/react-timeago/-/react-timeago-6.1.1.tgz#d9365c042428eceb90c4a689248d55b37a1bd6be"
+  integrity sha512-44zsWw2J/4AiZ/eVviygDthcDvCSuVyR/PLVF/g7OIUGq8rnEOwa3A+pHPmHt9WJ5fhHumwTY+Go+RkzEaIHvQ==
+
 react-transition-group@^4.4.0:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
@@ -2623,6 +2628,18 @@ test@^0.6.0:
   integrity sha1-WYasRF7Bd1QyJRLRBLoyyKY+k44=
   dependencies:
     ansi-font "0.0.2"
+
+timeago-react@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/timeago-react/-/timeago-react-3.0.2.tgz#1bd8b86c37c93bcd6a4340fea340e6c9c2bdd4e0"
+  integrity sha512-K+NqoRcE13xv7lrmHtZmy7G+yXF8ZxmuwRK/EGKyT1chpI3zmV6YnB5o9+slnOCq1dXuQJknr/hWjINyP7C9LA==
+  dependencies:
+    timeago.js "^4.0.0"
+
+timeago.js@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/timeago.js/-/timeago.js-4.0.2.tgz#724e8c8833e3490676c7bb0a75f5daf20e558028"
+  integrity sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==
 
 timers-browserify@2.0.12, timers-browserify@^2.0.4:
   version "2.0.12"

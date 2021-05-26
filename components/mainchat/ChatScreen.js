@@ -4,19 +4,15 @@ import styled from "styled-components";
 import { auth, db } from "../../config/firebase";
 import { Avatar, IconButton } from "@material-ui/core";
 import { AttachFile, InsertEmoticon, Mic, MoreVert } from "@material-ui/icons";
-import Loading from "../../components/loading/Loading";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
 import { useState } from "react";
 import firebase from "firebase";
 import getRecipientEmail from "../../utils/getRecipientEmail";
-
+import TimeAgo from "timeago-react";
 const ChatScreen = ({ chat, messages }) => {
-  // console.log(chat);
-  // console.log("=============================");
-  // console.log(messages);
   const [input, setInput] = useState("");
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const router = useRouter();
   const [messagesSnapshot] = useCollection(
     db
@@ -65,15 +61,30 @@ const ChatScreen = ({ chat, messages }) => {
     });
     setInput("");
   };
-  const recipientsEmail = getRecipientEmail(chat.users, user);
-  if (loading || !recipientsEmail) return <Loading />;
+  const recipient = recipientSnapshot?.docs?.[0]?.data();
+  const recipientEmail = getRecipientEmail(chat.users, user);
   return (
     <Container>
       <Header>
-        <Avatar />
+        {recipient ? (
+          <Avatar src={recipient?.photoURL} />
+        ) : (
+          <Avatar>{recipientEmail[0]}</Avatar>
+        )}
         <HeaderInformation>
-          <h3>{recipientsEmail}</h3>
-          <p>last Seen ...</p>
+          <h3>{recipientEmail}</h3>
+          {recipientSnapshot ? (
+            <p>
+              Last active:{" "}
+              {recipient?.lastSeen?.toDate() ? (
+                <TimeAgo datatime={recipient?.lastSeen?.toDate()} />
+              ) : (
+                "Unavailable"
+              )}
+            </p>
+          ) : (
+            <p>Loading Last active ...</p>
+          )}
         </HeaderInformation>
         <HeaderIcons>
           <IconButton>

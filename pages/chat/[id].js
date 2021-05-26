@@ -9,8 +9,6 @@ import getRecipientEmail from "../../utils/getRecipientEmail";
 import Loading from "../../components/loading/Loading";
 
 function Chat({ chat, messages }) {
-  console.log(chat);
-  console.log(messages);
   const [user, loading] = useAuthState(auth);
   // console.log()
   if (loading) return <Loading />;
