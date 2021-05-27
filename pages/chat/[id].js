@@ -8,17 +8,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import getRecipientEmail from "../../utils/getRecipientEmail";
 
 function Chat({ chat, messages }) {
-  console.log("================Rendering Chat==============");
   const [user] = useAuthState(auth);
-  return (
+  if (!user) {
+    router.push("/");
+  }
+  return chat !== null ? (
     <Container>
       <Head>
-        <title>Chat with {getRecipientEmail(chat.users, user)}</title>
+        <title>Chat with {getRecipientEmail(chat?.users, user)}</title>
       </Head>
       <Sidebar />
       <ChatContainer>
         <ChatScreen chat={chat} messages={messages} />
       </ChatContainer>
+    </Container>
+  ) : (
+    <Container>
+      <Head>
+        <title>WhatsApp 2.1</title>
+      </Head>
+      <Sidebar />
+      <MainContainer></MainContainer>
     </Container>
   );
 }
@@ -28,6 +38,15 @@ export default Chat;
 export async function getServerSideProps(context) {
   const ref = db.collection("chats").doc(context.query.id);
   //Preping the messages on the server
+  if (context.query.id == "main") {
+    console.log("main");
+    return {
+      props: {
+        messages: null,
+        chat: null,
+      },
+    };
+  }
   const messageRes = await ref
     .collection("messages")
     .orderBy("timestamp", "asc")
@@ -39,7 +58,7 @@ export async function getServerSideProps(context) {
     }))
     .map((message) => ({
       ...message,
-      timestamp: message.timestamp?.toDate().getTime(),
+      timestamp: message?.timestamp?.toDate().getTime(),
     }));
   //Preping the Chats
   const chatRes = await ref.get();
@@ -47,11 +66,10 @@ export async function getServerSideProps(context) {
     id: chatRes.id,
     ...chatRes.data(),
   };
-  console.log(chat);
   return {
     props: {
       messages: JSON.stringify(messages),
-      chat: chat,
+      chat: JSON.stringify(chat),
     },
   };
 }
@@ -68,4 +86,9 @@ const ChatContainer = styled.div`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+`;
+const MainContainer = styled.div`
+  flex: 1;
+  height: 100vh;
+  background-color: #e5ded8;
 `;

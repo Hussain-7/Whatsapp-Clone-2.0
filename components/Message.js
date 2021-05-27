@@ -27,7 +27,9 @@ const MessageElement = styled.p`
   min-width: 60px;
   padding-bottom: 26px;
   position: relative;
-  text-align: center;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  max-width: 50%;
 `;
 
 const Sender = styled(MessageElement)`

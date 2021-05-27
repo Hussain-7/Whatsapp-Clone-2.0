@@ -1,10 +1,11 @@
-import { Avatar } from "@material-ui/core";
+import { Avatar, IconButton } from "@material-ui/core";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../../config/firebase";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import getRecipientEmail from "../../../utils/getRecipientEmail";
 import { useCollection } from "react-firebase-hooks/firestore";
+
 const ChatRow = ({ id, users }) => {
   const router = useRouter();
   const [user] = useAuthState(auth);
@@ -22,6 +23,8 @@ const ChatRow = ({ id, users }) => {
       {recipient ? <UserAvatar src={recipient?.photoURL} /> : <UserAvatar />}
 
       <p>{recipientsEmail}</p>
+      <IconButton>
+      </IconButton>
     </Container>
   );
 };

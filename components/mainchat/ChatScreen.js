@@ -10,7 +10,10 @@ import { useRef, useState } from "react";
 import firebase from "firebase";
 import getRecipientEmail from "../../utils/getRecipientEmail";
 import TimeAgo from "timeago-react";
+import MenuIcon from "./MenuIcon";
 const ChatScreen = ({ chat, messages }) => {
+  const chatreceived = JSON.parse(chat);
+  console.log("============Rendering Chat screen===============");
   const [input, setInput] = useState("");
   const endOfMessageRef = useRef(null);
   const [user] = useAuthState(auth);
@@ -22,10 +25,11 @@ const ChatScreen = ({ chat, messages }) => {
       .collection("messages")
       .orderBy("timestamp", "asc")
   );
+  console.log(chat);
   const [recipientSnapshot] = useCollection(
     db
       .collection("users")
-      .where("email", "==", getRecipientEmail(chat.users, user))
+      .where("email", "==", getRecipientEmail(chatreceived?.users, user))
   );
   const showMessages = () => {
     if (messagesSnapshot) {
@@ -60,6 +64,13 @@ const ChatScreen = ({ chat, messages }) => {
       },
       { merge: true }
     );
+    db.collection("chats").doc(router.query.id).set(
+      {
+        lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+
     db.collection("chats").doc(router.query.id).collection("messages").add({
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       message: input,
@@ -70,7 +81,7 @@ const ChatScreen = ({ chat, messages }) => {
     scrollToBottom();
   };
   const recipient = recipientSnapshot?.docs?.[0]?.data();
-  const recipientEmail = getRecipientEmail(chat.users, user);
+  const recipientEmail = getRecipientEmail(chatreceived?.users, user);
   return (
     <Container>
       <Header>
@@ -102,7 +113,7 @@ const ChatScreen = ({ chat, messages }) => {
             <AttachFile />
           </IconButton>
           <IconButton>
-            <MoreVert />
+            <MenuIcon chatId={router.query.id} />
           </IconButton>
         </HeaderIcons>
       </Header>

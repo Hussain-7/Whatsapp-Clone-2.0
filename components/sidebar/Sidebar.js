@@ -7,8 +7,13 @@ import { auth, db } from "../../config/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import FormDialog from "./FormDialog";
 import ChatRow from "./components/ChatRow";
-
+import Loading from "../loading/Loading";
+import { useRouter } from "next/router";
+import firebase from "firebase";
+import DeleteIcon from "@material-ui/icons/Delete";
 const Sidebar = () => {
+  const router = useRouter();
+
   const [input, setInput] = useState("");
   const [user] = useAuthState(auth);
 
@@ -23,14 +28,20 @@ const Sidebar = () => {
     // here we will add firebase
     db.collection("chats").add({
       users: [user.email, input],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setInput("");
+  };
+  const onLogout = () => {
+    auth.signOut();
+    router.push("/", undefined, { shallow: true });
   };
 
   return (
     <Container>
       <Header>
-        <UserAvatar onClick={() => auth.signOut()} src={user?.photoURL} />
+        <UserAvatar onClick={onLogout} src={user?.photoURL} />
         <IconContainer>
           <IconButton>
             <Chat />

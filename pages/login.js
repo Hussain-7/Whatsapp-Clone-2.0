@@ -2,14 +2,18 @@ import { Button } from "@material-ui/core";
 import Head from "next/head";
 import styled from "styled-components";
 import { auth, provider } from "../config/firebase";
+import { useRouter } from "next/router";
+
 const Login = () => {
+  const router = useRouter();
+
   const signIn = () => {
     auth
       .signInWithPopup(provider)
       .then((result) => {
-        console.log(result);
+        router.push(`/chat/main`);
       })
-      .catch(alert);
+      .catch(console.log);
   };
   return (
     <Container>
