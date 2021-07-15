@@ -27,7 +27,6 @@ function MyApp({ Component, pageProps }) {
 
   if (loading) return <Loading />;
   if (!user) {
-    console.log("Logout clicked");
     return <Login />;
   } else {
     if (router.query.logout) {
