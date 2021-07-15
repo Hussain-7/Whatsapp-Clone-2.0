@@ -35,7 +35,7 @@ const Sidebar = () => {
   };
   const onLogout = () => {
     auth.signOut();
-    router.push("/", undefined, { shallow: true });
+    router.push("/?logout=true", undefined, { shallow: true });
   };
 
   return (

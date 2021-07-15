@@ -1,7 +1,5 @@
 import firebase from "firebase";
-
-const firebaseConfig = {
-};
+const firebaseConfig = {};
 
 // Not intitializing firebase apps if already exists
 const app = !firebase.apps.length

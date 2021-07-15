@@ -5,7 +5,10 @@ import Loading from "../components/loading/Loading";
 import Login from "./login";
 import { useEffect } from "react";
 import firebase from "firebase";
+import { useRouter } from "next/router";
+
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const [user, loading] = useAuthState(auth);
   useEffect(() => {
     if (user) {
@@ -21,10 +24,19 @@ function MyApp({ Component, pageProps }) {
       );
     }
   }, [user]);
+
   if (loading) return <Loading />;
   if (!user) {
+    console.log("Logout clicked");
     return <Login />;
-  } else return <Component {...pageProps} />;
+  } else {
+    if (router.query.logout) {
+      router.query = {};
+      return <Login />;
+    } else {
+      return <Component {...pageProps} />;
+    }
+  }
 }
 
 export default MyApp;
